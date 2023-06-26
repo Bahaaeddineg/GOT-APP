@@ -7,10 +7,17 @@ class Repository {
   Repository(this.api);
 
   Future<List<MyCharacters>> getCharacters() async {
-    Map chars = await api.getAllCharacters();
-    List characters = chars["results"];
-    return characters
-        .map((character) => MyCharacters.fromJson(character))
-        .toList();
+    List chars = await api.getAllCharacters();
+    return chars.map((character) => MyCharacters.fromJson(character)).toList();
+  }
+}
+
+class QuoteRepo {
+  final Api2 api;
+  QuoteRepo(this.api);
+  Future<Quote> getQuotes(String name) async {
+    List quotes = await api.getAllQuotes();
+    Map ok =quotes.firstWhere((quote) => quote["name"] == name);
+    return Quote.fromJson(ok);
   }
 }

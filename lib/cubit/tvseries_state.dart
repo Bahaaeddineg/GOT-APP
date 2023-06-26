@@ -6,6 +6,10 @@ abstract class TvseriesState {}
 class TvseriesInitial extends TvseriesState {}
 
 class LoadedData extends TvseriesState{
-  final List characters;
-  LoadedData(this.characters);
+  final List character;
+  LoadedData(this.character);
+}
+class LoadedQuotes extends TvseriesState{
+  final Quote quote;
+  LoadedQuotes(this.quote);
 }

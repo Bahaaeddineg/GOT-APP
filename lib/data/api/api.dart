@@ -3,16 +3,29 @@ import 'dart:convert';
 import 'package:http/http.dart';
 import 'package:tvseries/constants/constants.dart';
 
+//characters
 class Api {
-  Future<Map<String, dynamic>> getAllCharacters() async {
-    Uri url = Uri.parse("${baseUrl}character");
+  Future<List> getAllCharacters() async {
+    Uri url = Uri.parse("${baseUrl}Characters");
     try {
       Response response = await get(url);
 
       return jsonDecode(response.body);
     } catch (e) {
       print("there is an error : $e");
-      return {};
+      return [];
+    }
+  }
+}
+
+class Api2 {
+  Future<List> getAllQuotes() async {
+    Uri url = Uri.parse("${quotBaseUrl}characters");
+    try {
+      Response response = await get(url);
+      return jsonDecode(response.body);
+    } catch (e) {
+      return [];
     }
   }
 }

@@ -1,13 +1,23 @@
-class MyCharacters{
-  late String name;
-  late String gender;
+class MyCharacters {
+  late String fullName;
+  late String nickName;
   late String image;
-  late String species;
+  late String family;
+  late String id;
 
-  MyCharacters.fromJson(Map data){      //response["results"] is the list that we r gonna  map throw it to create the list of objects                            
-    name=data["name"];
-    gender=data["gender"];
-    image=data["image"];
-    species=data["species"];
+  MyCharacters.fromJson(Map data) {
+    //response["results"] is the list that we r gonna  map throw it to create the list of objects
+    fullName = data["fullName"];
+    nickName = data["title"];
+    image = data["imageUrl"];
+    family = data["family"];
+    id = data["id"].toString();
+  }
+}
+
+class Quote {
+  late List quote;
+  Quote.fromJson(Map data) {
+    quote = data["quotes"];
   }
 }

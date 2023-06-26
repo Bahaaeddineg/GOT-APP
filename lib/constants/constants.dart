@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-const baseUrl="https://rickandmortyapi.com/api/";
+const baseUrl="https://thronesapi.com/api/v2/";
+const quotBaseUrl="https://api.gameofthronesquotes.xyz/v1/";
 
 
 class MyColors{

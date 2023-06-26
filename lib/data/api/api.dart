@@ -16,9 +16,7 @@ class Api {
       return [];
     }
   }
-}
 
-class Api2 {
   Future<List> getAllQuotes() async {
     Uri url = Uri.parse("${quotBaseUrl}characters");
     try {

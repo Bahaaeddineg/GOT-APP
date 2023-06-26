@@ -14,7 +14,7 @@ class _CharactersScreenState extends State<CharactersScreen> {
   late List characters;
   final controller = TextEditingController();
   bool isSearching = false;
-  late List seachingList = characters;
+  late List seachingList;
   FocusNode _textFieldFocusNode = FocusNode();
   @override
   void initState() {
@@ -37,7 +37,7 @@ class _CharactersScreenState extends State<CharactersScreen> {
       onChanged: (typedText) => filteringResult(typedText),
       style: TextStyle(color: MyColors.white),
       decoration: InputDecoration(
-        border: InputBorder.none,
+          border: InputBorder.none,
           hintText: "Find a character",
           hintStyle: TextStyle(color: MyColors.white)),
     );
@@ -61,28 +61,21 @@ class _CharactersScreenState extends State<CharactersScreen> {
     clearInput();
     setState(() {
       isSearching = false;
-      BlocProvider.of<TvseriesCubit>(context).getCharacters();
     });
-    
   }
 
   void startSearching() {
-    
     setState(() {
       isSearching = true;
     });
     _textFieldFocusNode.requestFocus();
   }
 
-  void filteringResult(String searchedCharacter) {
-    if (controller.text.isEmpty) {
-      seachingList = characters;
-    } else {
-      seachingList = characters
-          .where((character) =>
-              character.name.toLowerCase().startsWith(searchedCharacter))
-          .toList();
-    }
+  filteringResult(String searchedCharacter) {
+    seachingList = characters
+        .where((character) =>
+            character.fullName.toLowerCase().startsWith(searchedCharacter))
+        .toList();
 
     setState(() {});
   }
@@ -109,15 +102,17 @@ class _CharactersScreenState extends State<CharactersScreen> {
           leading: isSearching ? backArrow() : null,
           actions: appBarIcon(),
         ),
-        body:
-            BlocBuilder<TvseriesCubit, TvseriesState>(builder: (context, state) {
-          if (state is LoadedData) {
-            seachingList = state.character;       //
-            return CharactersWidget(seachingList, context);
-          } else {
-            return const Text("loading");
-          }
-        }),
+        body: BlocBuilder<TvseriesCubit, TvseriesState>(
+          builder: (context, state) {
+            if (state is LoadedData) {
+              characters = state.characters;
+              return CharactersWidget(
+                  controller.text.isEmpty ? characters : seachingList, context);
+            } else {
+              return const Text("loading");
+            }
+          },
+        ),
       ),
     );
   }

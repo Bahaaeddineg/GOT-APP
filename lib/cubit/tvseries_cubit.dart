@@ -8,18 +8,17 @@ part 'tvseries_state.dart';
 
 class TvseriesCubit extends Cubit<TvseriesState> {
   final Repository repo;
-  final QuoteRepo quoteRepo;
-  TvseriesCubit(this.repo,this.quoteRepo) : super(TvseriesInitial());
-
-  List getCharacters() {
+  TvseriesCubit(this.repo) : super(TvseriesInitial());
+  
+  List<MyCharacters> getCharacters() {
     repo.getCharacters().then((characters) {
       emit(LoadedData(characters));
       return characters;
     });
-    return [];
+   return [];
   }
   Quote getQuotes(String name) {
-    quoteRepo.getQuotes(name).then((quote) {
+    repo.getQuotes(name).then((quote) {
       emit(LoadedQuotes(quote));
       return quote;
     });

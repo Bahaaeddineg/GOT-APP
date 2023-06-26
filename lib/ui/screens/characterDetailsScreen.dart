@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tvseries/constants/constants.dart';
@@ -62,6 +63,25 @@ class CharacterDetails extends StatelessWidget {
     );
   }
 
+  Widget quoteText(state, String quote) {
+    return Center(
+      child: AnimatedTextKit(
+        isRepeatingAnimation: true,
+        animatedTexts: [
+          FlickerAnimatedText(
+            quote,
+            textAlign: TextAlign.center,
+            textStyle: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: MyColors.yellow,
+                letterSpacing: 1),
+          ),
+        ],
+        repeatForever: true,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,18 +98,23 @@ class CharacterDetails extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      text("Full Name: ", character.fullName),
+                      text("Full name: ", character.fullName),
                       divider(280),
-                      text("Nick Name: ", character.nickName),
+                      text("Title: ", character.title),
                       divider(268),
                       text("Family: ", character.family),
                       divider(262),
-                      // text("Location: ", character.),
-                      // divider(262),
+                      const SizedBox(
+                        height: 20,
+                      ),
                       BlocBuilder<TvseriesCubit, TvseriesState>(
                           builder: (context, state) {
                         if (state is LoadedQuotes) {
-                          return Text(state.quote.quote[Random().nextInt(state.quote.quote.length)]);
+                          return quoteText(
+                            state,
+                            (state.quote.quote[
+                                Random().nextInt(state.quote.quote.length)]),
+                          );
                         } else {
                           return const Text("loadingggg");
                         }

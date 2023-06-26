@@ -20,10 +20,10 @@ Padding CharactersWidget(List characters, BuildContext ctx) {
         padding: const EdgeInsetsDirectional.all(4),
         child: InkWell(
           onTap: () {
-            BlocProvider.of<TvseriesCubit>(ctx).getQuotes(characters[index].fullName);
+            BlocProvider.of<TvseriesCubit>(ctx)
+                .getQuotes(characters[index].fullName);
             Navigator.of(context)
                 .pushNamed('/details', arguments: characters[index]);
-            
           },
           child: GridTile(
             footer: Container(

@@ -10,25 +10,23 @@ import 'ui/screens/characterDetailsScreen.dart';
 
 class MyRoutes {
   late Repository repo;
-  late QuoteRepo quoterepo;
   late TvseriesCubit cubit;
   MyRoutes() {
     repo = Repository(Api());
-    quoterepo=QuoteRepo(Api2());
-    cubit = TvseriesCubit(repo,quoterepo);
+    cubit = TvseriesCubit(repo);
   }
   Route? generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case '/':
         return MaterialPageRoute(
             builder: (_) =>
-                BlocProvider(create: (_) => cubit, child: CharactersScreen()));
+                BlocProvider(create: (BuildContext context) => cubit, child: CharactersScreen()));
       case '/details':
-        var character = settings.arguments as MyCharacters;
+        final characters = settings.arguments as MyCharacters;
         return MaterialPageRoute(
             builder: (_) => BlocProvider(
-                create: (_) => cubit,
-                child: CharacterDetails(character: character)));
+                create: (BuildContext context) => cubit,
+                child: CharacterDetails(character: characters)));
     }
   }
 }

@@ -1,3 +1,4 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tvseries/data/repository/repo.dart';
@@ -17,12 +18,11 @@ class TvseriesCubit extends Cubit<TvseriesState> {
     });
    return [];
   }
-  Quote getQuotes(String name) {
+  void getQuotes(String name) {
     repo.getQuotes(name).then((quote) {
       emit(LoadedQuotes(quote));
-      return quote;
     });
-    return Quote.fromJson({"quotes":[],"name":"name"});
+
   }
 
 }

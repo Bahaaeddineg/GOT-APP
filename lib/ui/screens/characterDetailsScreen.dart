@@ -48,8 +48,8 @@ class CharacterDetails extends StatelessWidget {
           ),
           TextSpan(
             text: corrText,
-            
-            style: const TextStyle(fontSize: 18,overflow: TextOverflow.ellipsis),
+            style:
+                const TextStyle(fontSize: 18, overflow: TextOverflow.ellipsis),
           )
         ],
       ),
@@ -64,29 +64,22 @@ class CharacterDetails extends StatelessWidget {
     );
   }
 
-  Widget quoteText(state, String quote,String name) {
+  Widget quoteText(state, String quote, String name) {
     return Center(
-      child: AnimatedTextKit(
-        isRepeatingAnimation: true,
-        animatedTexts: [
-          FlickerAnimatedText(
-            '"$quote"\n                            -$name-',
-            textAlign: TextAlign.center,
-            textStyle: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: MyColors.yellow,
-                letterSpacing: 1),
-          ),
-        ],
-        repeatForever: true,
+      child: Text(
+        '"$quote"\n                            -$name-',
+        style: TextStyle(
+            color: MyColors.yellow,
+            fontSize: 14,
+            fontWeight: FontWeight.bold,
+            letterSpacing: 1),
       ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-     BlocProvider.of<TvseriesCubit>(context)
-                .getQuotes(character.fullName);
+    BlocProvider.of<TvseriesCubit>(context).getQuotes(character.fullName);
     return Scaffold(
       backgroundColor: MyColors.blue,
       body: CustomScrollView(
@@ -102,22 +95,21 @@ class CharacterDetails extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       text("Full name: ", character.fullName),
-                      divider(280),
+                      divider(245),
                       text("Title: ", character.title),
-                      divider(268),
+                      divider(286),
                       text("Family: ", character.family),
-                      divider(262),
+                      divider(270),
                       const SizedBox(
                         height: 20,
                       ),
                       BlocBuilder<TvseriesCubit, TvseriesState>(
                           builder: (context, state) {
                         if (state is LoadedQuotes) {
-                          return quoteText(
-                            state,
-                            (state.quote.quote[
-                                Random().nextInt(state.quote.quote.length)]),character.fullName
-                          );
+                          int index =
+                              Random().nextInt(state.quote.quote.length - 1);
+                          return quoteText(state, state.quote.quote[index],
+                              character.fullName);
                         } else {
                           return const Text("loadingggg");
                         }

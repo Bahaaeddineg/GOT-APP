@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_offline/flutter_offline.dart';
 import 'package:tvseries/constants/constants.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tvseries/cubit/tvseries_cubit.dart';
@@ -6,6 +7,7 @@ import 'package:tvseries/cubit/tvseries_cubit.dart';
 import '../widgets/charactersWidget.dart';
 
 class CharactersScreen extends StatefulWidget {
+  late bool connected;
   @override
   State<CharactersScreen> createState() => _CharactersScreenState();
 }
@@ -52,7 +54,7 @@ class _CharactersScreenState extends State<CharactersScreen> {
     } else {
       return [
         IconButton(
-            onPressed: () => startSearching(), icon: const Icon(Icons.search))
+            onPressed: () => widget.connected? startSearching():null, icon: const Icon(Icons.search))
       ];
     }
   }
@@ -86,6 +88,35 @@ class _CharactersScreenState extends State<CharactersScreen> {
     });
   }
 
+  Widget buildBlocWidget() {
+    return BlocBuilder<TvseriesCubit, TvseriesState>(
+      builder: (context, state) {
+        if (state is LoadedData) {
+          characters = state.characters;
+          return CharactersWidget(
+              controller.text.isEmpty ? characters : seachingList, context);
+        } else {
+          return const Text("loading");
+        }
+      },
+    );
+  }
+
+  Widget buildNoNetWidget() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          'No intenet connection ! The data will be automatically loaded when you connect to internet ',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              color: MyColors.white, fontWeight: FontWeight.bold, fontSize: 16),
+        ),
+        Image.asset('assets/images/no_internet.webp'),
+      ],
+    );
+  }
+
   Widget backArrow() {
     return GestureDetector(
         onTap: () => stopSearching(), child: const Icon(Icons.arrow_back));
@@ -102,16 +133,19 @@ class _CharactersScreenState extends State<CharactersScreen> {
           leading: isSearching ? backArrow() : null,
           actions: appBarIcon(),
         ),
-        body: BlocBuilder<TvseriesCubit, TvseriesState>(
-          builder: (context, state) {
-            if (state is LoadedData) {
-              characters = state.characters;
-              return CharactersWidget(
-                  controller.text.isEmpty ? characters : seachingList, context);
+        body: OfflineBuilder(
+          connectivityBuilder: (BuildContext context,
+              ConnectivityResult connectivity, Widget child) {
+            widget.connected = connectivity != ConnectivityResult.none;
+            if (widget.connected) {
+              return buildBlocWidget();
             } else {
-              return const Text("loading");
+              return buildNoNetWidget();
             }
           },
+          child: const CircularProgressIndicator(
+            color: Colors.white,
+          ),
         ),
       ),
     );

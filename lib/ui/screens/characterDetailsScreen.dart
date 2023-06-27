@@ -48,7 +48,8 @@ class CharacterDetails extends StatelessWidget {
           ),
           TextSpan(
             text: corrText,
-            style: const TextStyle(fontSize: 18),
+            
+            style: const TextStyle(fontSize: 18,overflow: TextOverflow.ellipsis),
           )
         ],
       ),
@@ -63,13 +64,13 @@ class CharacterDetails extends StatelessWidget {
     );
   }
 
-  Widget quoteText(state, String quote) {
+  Widget quoteText(state, String quote,String name) {
     return Center(
       child: AnimatedTextKit(
         isRepeatingAnimation: true,
         animatedTexts: [
           FlickerAnimatedText(
-            quote,
+            '"$quote"\n                            -$name-',
             textAlign: TextAlign.center,
             textStyle: TextStyle(
                 fontWeight: FontWeight.bold,
@@ -84,6 +85,8 @@ class CharacterDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+     BlocProvider.of<TvseriesCubit>(context)
+                .getQuotes(character.fullName);
     return Scaffold(
       backgroundColor: MyColors.blue,
       body: CustomScrollView(
@@ -113,7 +116,7 @@ class CharacterDetails extends StatelessWidget {
                           return quoteText(
                             state,
                             (state.quote.quote[
-                                Random().nextInt(state.quote.quote.length)]),
+                                Random().nextInt(state.quote.quote.length)]),character.fullName
                           );
                         } else {
                           return const Text("loadingggg");
@@ -123,7 +126,7 @@ class CharacterDetails extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(
-                  height: 540,
+                  height: 510,
                 )
               ],
             ),

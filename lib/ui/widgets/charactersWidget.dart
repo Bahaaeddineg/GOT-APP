@@ -20,13 +20,12 @@ Padding CharactersWidget(List characters, BuildContext ctx) {
         padding: const EdgeInsetsDirectional.all(4),
         child: InkWell(
           onTap: () {
-            BlocProvider.of<TvseriesCubit>(ctx)
-                .getQuotes(characters[index].fullName);
             Navigator.of(context)
                 .pushNamed('/details', arguments: characters[index]);
           },
           child: GridTile(
             footer: Container(
+              
               padding: const EdgeInsets.symmetric(vertical: 8),
               color: Colors.black54,
               child: Text(
@@ -41,14 +40,12 @@ Padding CharactersWidget(List characters, BuildContext ctx) {
             ),
             child: Hero(
               tag: characters[index].id,
-              child: Image(
-                fit: BoxFit.cover,
-                image: NetworkImage(characters[index].image),
+              child:FadeInImage.assetNetwork(fit: BoxFit.cover,image: characters[index].image, placeholder: 'assets/images/loading.gif',),
               ),
             ),
           ),
         ),
       ),
-    ),
+    
   );
 }
